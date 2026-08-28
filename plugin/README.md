@@ -1,5 +1,10 @@
 # Colacut — VST3 / AU
 
+Part of [Colacut](../README.md), a fork of
+[Capicola](https://github.com/heavylight-industries/capicola) by Heavylight
+Industries. The DSP core under `lib/` is theirs; this plug-in shell is the
+part this fork adds.
+
 The Alchemy Lab module as a plugin. The DSP is the firmware's, unchanged:
 `plugin/Source/CapicolaEngine.cpp` is a port of `src/audio/audio_engine.cpp`
 with the Daisy-specific parts (SDRAM globals, `CpuLoadMeter`, the fixed

@@ -6,6 +6,11 @@
 > [heavylight-industries.github.io/capicola/manual.html](https://heavylight-industries.github.io/capicola/manual.html)
 > — the same reference drawn on the real faceplate, with live LED state per page.
 
+> This reference is Heavylight Industries' documentation for
+> [Capicola](https://github.com/heavylight-industries/capicola), carried into
+> this fork under the AGPL with the product name changed. The panel it
+> describes is theirs.
+
 Colacut listens constantly. Two independent channels (L/R) each run a transient
 detector over the input; every detected transient — or a press of **B2**, or a
 rising edge on **TRIG IN** — splices the granular playback head onto fresh
