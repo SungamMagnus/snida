@@ -12,3 +12,4 @@ tools/simulator/build/
 .vscode/.cortex-debug.*
 build-host
 renders
+plugin/web/colacut.wasm
