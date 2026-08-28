@@ -14,7 +14,8 @@ their work, not mine. What this fork adds is the plug-in build. See
 
 *The VST3 / AU faceplate this fork adds. The modulation matrix in the middle
 routes the input and output envelope followers, or the mod wheel, onto any
-performance control.*
+performance control. The checkbox beside the OUT meter arms the output
+limiter; the meter lights while it is guarding.*
 
 ## What it does
 
