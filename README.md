@@ -10,6 +10,12 @@ keyframe time-stretching engine, the DSP core and the research behind them are
 their work, not mine. What this fork adds is the plug-in build. See
 [Credit](#credit) for the paper, the manual and the audio examples.
 
+![Colacut plug-in panel](docs/colacut-panel.png)
+
+*The VST3 / AU faceplate this fork adds. The modulation matrix in the middle
+routes the input and output envelope followers, or the mod wheel, onto any
+performance control.*
+
 ## What it does
 
 Incoming stereo audio is stretched out, and in parallel its envelope and
