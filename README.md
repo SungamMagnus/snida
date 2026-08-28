@@ -60,6 +60,38 @@ Forked from upstream `93060e2` (24 August 2026). Changes since:
 
 The firmware, `lib/` and `src/` are otherwise unmodified.
 
+## Install
+
+Prebuilt plug-in binaries are on the
+[Releases](https://github.com/SungamMagnus/colacut/releases) page. macOS
+universal (Apple Silicon and Intel), macOS 11 or later — there is no Windows or
+Linux build. The Alchemy Lab V2 firmware is not released as a binary; build it
+from source below.
+
+Copy the plug-ins where your host looks for them:
+
+```
+VST3  ->  ~/Library/Audio/Plug-Ins/VST3/
+AU    ->  ~/Library/Audio/Plug-Ins/Components/
+```
+
+### Clear the quarantine
+
+These builds carry an ad-hoc signature, not an Apple Developer ID. macOS flags
+anything downloaded from the internet as quarantined, and Gatekeeper then
+refuses to load the plug-in — usually **silently**, so it simply never appears
+in your host and nothing explains why. Run this once after installing:
+
+```sh
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Colacut.vst3
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Colacut.component
+```
+
+Then restart your host and rescan.
+
+Building from source avoids this altogether — a plug-in you compile yourself is
+never quarantined.
+
 ## Layout
 
 - `plugin/` — the VST3 / AU build (this fork).
