@@ -21,9 +21,6 @@ struct PanelState
 
     /** Bumps on every slice the engine takes, so the panel can flash B2. */
     std::atomic<int> sliceCount { 0 };
-
-    /** Limiter gain reduction, 1 = not working. */
-    std::atomic<float> reduction { 1.0f };
 };
 
 class CapicolaProcessor final : public juce::AudioProcessor

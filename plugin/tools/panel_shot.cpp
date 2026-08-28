@@ -16,7 +16,6 @@ int main (int argc, char** argv)
     proc.setRateAndBufferSizeDetails (48000.0, 128);
     proc.prepareToPlay (48000.0, 128);
     if (auto* lp = proc.apvts.getParameter ("limiter")) lp->setValueNotifyingHost (1.0f);
-    proc.panel.reduction.store (0.63f);   // ~4 dB
     std::unique_ptr<juce::AudioProcessorEditor> editor (proc.createEditor());
     editor->setSize ((int) capi::panel::designW, (int) capi::panel::designH);
 

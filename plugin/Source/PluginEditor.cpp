@@ -84,7 +84,7 @@ void CapicolaEditor::buildControls()
              faderTrack);
 
     /* Output. */
-    add (Kind::toggle, pid::limiter, limiterRect(), 0.0f);
+    add (Kind::toggle, pid::limiter, limiterBox().expanded (6.0f), 0.0f);
 }
 
 float CapicolaEditor::scale() const
@@ -133,7 +133,7 @@ void CapicolaEditor::mouseDown (const juce::MouseEvent& e)
         return;
     }
 
-    if (limiterRect().contains (d))
+    if (limiterBox().expanded (6.0f).contains (d))
     {
         auto* param = ctls[(size_t) kLimiter].param;
         param->beginChangeGesture();
@@ -340,25 +340,34 @@ void CapicolaEditor::paint (juce::Graphics& g)
 
         const float y = statusY;
 
+        /* The output meter carries the limiter's state - lit when it is
+           guarding the output, grey when the output is running free. */
+        const bool limiting = ctls[(size_t) kLimiter].param->getValue() > 0.5f;
+
         text (g, "IN", { 44.0f, y - 7.0f, 20.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
-        meter (g, { 66.0f, y - 3.5f, 84.0f, 7.0f }, state.envIn.load (std::memory_order_relaxed), hue::signal);
-        lamp (g, 162.0f, y, state.inGate.load (std::memory_order_relaxed) || flashing, hue::signal);
+        meter (g, { 66.0f, y - 3.5f, 70.0f, 7.0f }, state.envIn.load (std::memory_order_relaxed), hue::signal);
+        lamp (g, 146.0f, y, state.inGate.load (std::memory_order_relaxed) || flashing, hue::signal);
 
-        text (g, "OUT", { 186.0f, y - 7.0f, 26.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
-        meter (g, { 216.0f, y - 3.5f, 84.0f, 7.0f }, state.envOut.load (std::memory_order_relaxed), hue::signal);
-        lamp (g, 312.0f, y, state.outGate.load (std::memory_order_relaxed), hue::signal);
+        text (g, "OUT", { 168.0f, y - 7.0f, 26.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
+        meter (g, outMeterRect(), state.envOut.load (std::memory_order_relaxed),
+               limiting ? hue::signal : ink (0.30f));
+        lamp (g, 278.0f, y, state.outGate.load (std::memory_order_relaxed), hue::signal);
 
-        text (g, "MOD", { 340.0f, y - 7.0f, 26.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
-        meterBipolar (g, { 370.0f, y - 3.5f, 84.0f, 7.0f }, state.modIn.load (std::memory_order_relaxed), hue::wheel);
+        checkbox (g, limiterBox(), limiting, hue::signal);
+        text (g, "LIM", { 306.0f, y - 7.0f, 26.0f, 14.0f }, 7.8f,
+              limiting ? hue::signal : ink (0.38f), juce::Justification::left, false);
 
-        text (g, "CLIP", { 480.0f, y - 7.0f, 30.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
-        lamp (g, 522.0f, y, state.inPeak.load (std::memory_order_relaxed) > 0.99f, hue::clip);
+        text (g, "MOD", { 344.0f, y - 7.0f, 26.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
+        meterBipolar (g, { 374.0f, y - 3.5f, 70.0f, 7.0f }, state.modIn.load (std::memory_order_relaxed), hue::wheel);
 
-        text (g, "LATENCY", { 550.0f, y - 7.0f, 58.0f, 14.0f }, 8.5f, ink (0.45f),
+        text (g, "CLIP", { 460.0f, y - 7.0f, 30.0f, 14.0f }, 8.5f, ink (0.45f), juce::Justification::left, false);
+        lamp (g, 504.0f, y, state.inPeak.load (std::memory_order_relaxed) > 0.99f, hue::clip);
+
+        text (g, "LATENCY", { 524.0f, y - 7.0f, 58.0f, 14.0f }, 8.5f, ink (0.45f),
               juce::Justification::left, false);
         text (g, juce::String (proc.getLatencySamples() * 1000.0
                                    / juce::jmax (1.0, proc.getSampleRate()), 1) + " ms",
-              { 614.0f, y - 7.0f, 62.0f, 14.0f }, 10.0f, hue::ink, juce::Justification::left);
+              { 586.0f, y - 7.0f, 62.0f, 14.0f }, 10.0f, hue::ink, juce::Justification::left);
 
         /* Bottom-right corner: the action, then the mark. */
         const juce::Rectangle<float> mark (contentR - 68.0f, y - 6.0f, 68.0f, 12.0f);
@@ -369,37 +378,7 @@ void CapicolaEditor::paint (juce::Graphics& g)
         g.fillRect (b);
         tracked (g, "SLICE", b.withY (b.getY() + 5.0f).withHeight (11.0f), 8.5f, hue::paper, 1.6f, false);
 
-        /* LIMIT doubles as its own meter - the fill is the gain being pulled,
-           full at -12 dB. Panel room is scarce enough that a separate readout
-           would have cost more than it told you. */
-        const auto lim = limiterRect();
-        const bool limiting = ctls[(size_t) kLimiter].param->getValue() > 0.5f;
-        if (limiting)
-        {
-            /* Full bar at 12 dB down. Scaling on the raw gain instead would
-               peg the meter by 2.5 dB and tell you nothing after that. */
-            const float red = juce::jlimit (0.001f, 1.0f,
-                                            state.reduction.load (std::memory_order_relaxed));
-            const float dB  = -20.0f * std::log10 (red);
-            const float amount = juce::jlimit (0.0f, 1.0f, dB / 12.0f);
-            g.setColour (ink (0.10f));
-            g.fillRect (lim);
-            if (amount > 0.001f)
-            {
-                g.setColour (hue::clip);
-                g.fillRect (lim.withWidth (lim.getWidth() * amount));
-            }
-            g.setColour (hue::clip);
-            g.drawRect (lim, 1.0f);
-            tracked (g, "LIMIT", lim.withY (lim.getY() + 5.0f).withHeight (11.0f), 8.5f,
-                     hue::ink, 1.6f, false);
-        }
-        else
-        {
-            g.setColour (ink (0.28f));
-            g.drawRect (lim, 1.0f);
-            tracked (g, "LIMIT", lim.withY (lim.getY() + 5.0f).withHeight (11.0f), 8.5f,
-                     ink (0.45f), 1.6f, false);
-        }
+        text (g, "midi note on", { b.getX() - 74.0f, y - 7.0f, 66.0f, 14.0f }, 7.6f, ink (0.32f),
+              juce::Justification::right, false);
     }
 }

@@ -180,6 +180,17 @@ void meterBipolar (juce::Graphics& g, juce::Rectangle<float> r, float value, juc
     g.fillRect (mid - 0.5f, r.getY() - 2.0f, 1.0f, r.getHeight() + 4.0f);
 }
 
+void checkbox (juce::Graphics& g, juce::Rectangle<float> r, bool on, juce::Colour colour)
+{
+    g.setColour (on ? colour : ink (0.30f));
+    g.drawRect (r, 1.2f);
+    if (on)
+    {
+        g.setColour (colour);
+        g.fillRect (r.reduced (2.5f));
+    }
+}
+
 void lamp (juce::Graphics& g, float cx, float cy, bool on, juce::Colour colour)
 {
     auto s = juce::Rectangle<float> (8.0f, 8.0f).withCentre ({ cx, cy });

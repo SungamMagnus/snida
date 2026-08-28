@@ -63,11 +63,10 @@ inline juce::Rectangle<float> toggleRect (int i)
     return { togX, rowY (i) - 10.0f, togW, 20.0f };
 }
 
-/** The limiter takes the slot beside SLICE, and meters itself while it works. */
-inline juce::Rectangle<float> limiterRect()
-{
-    return { contentR - 68.0f - 82.0f - 76.0f, statusY - 10.0f, 66.0f, 20.0f };
-}
+/** The limiter sits with the output meter it protects, and the meter carries
+    the state: coloured when it is on, grey when it is not. */
+inline juce::Rectangle<float> outMeterRect() { return { 198.0f, statusY - 3.5f, 70.0f, 7.0f }; }
+inline juce::Rectangle<float> limiterBox()   { return { 292.0f, statusY - 5.0f, 10.0f, 10.0f }; }
 
 inline juce::Rectangle<float> sliceRect()
 {
@@ -109,5 +108,8 @@ void toggle3 (juce::Graphics&, juce::Rectangle<float>, int selected,
 void meter        (juce::Graphics&, juce::Rectangle<float>, float level, juce::Colour);
 void meterBipolar (juce::Graphics&, juce::Rectangle<float>, float value, juce::Colour);
 void lamp         (juce::Graphics&, float cx, float cy, bool on, juce::Colour);
+
+/** Small square that reads as clickable: filled when on, outline when off. */
+void checkbox     (juce::Graphics&, juce::Rectangle<float>, bool on, juce::Colour);
 
 } // namespace capi::panel

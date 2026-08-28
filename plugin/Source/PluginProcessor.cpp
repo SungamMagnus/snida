@@ -150,8 +150,6 @@ void CapicolaProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
     panel.outGate.store (engine_.outGate(), std::memory_order_relaxed);
     panel.modIn.store (modIn_, std::memory_order_relaxed);
     panel.sliceCount.store (slices, std::memory_order_relaxed);
-    panel.reduction.store (limiterOn_->get() ? limiter_.readReduction() : 1.0f,
-                           std::memory_order_relaxed);
 
     midi.clear();
 }
