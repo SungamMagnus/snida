@@ -6,6 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "CapicolaEngine.h"
+#include "Limiter.h"
 #include "Parameters.h"
 
 /** Everything the panel animates, published from the audio thread. */
@@ -20,6 +21,9 @@ struct PanelState
 
     /** Bumps on every slice the engine takes, so the panel can flash B2. */
     std::atomic<int> sliceCount { 0 };
+
+    /** Limiter gain reduction, 1 = not working. */
+    std::atomic<float> reduction { 1.0f };
 };
 
 class CapicolaProcessor final : public juce::AudioProcessor
@@ -61,6 +65,7 @@ private:
     void pushParameters (float sigIn, float sigOut, float sigWheel);
 
     capi::CapicolaEngine engine_;
+    capi::Limiter        limiter_;
     juce::AudioBuffer<float> scratch_;
 
     std::atomic<bool> sliceRequest_ { false };
@@ -72,6 +77,7 @@ private:
     std::array<juce::AudioParameterFloat*,  capi::numPots> depth_ {};
     std::array<juce::AudioParameterChoice*, capi::numPots> route_ {};
     std::array<juce::AudioParameterFloat*,  capi::numPots> sec_ {};
+    juce::AudioParameterBool* limiterOn_ = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CapicolaProcessor)
 };

@@ -20,6 +20,9 @@ CapicolaProcessor::CapicolaProcessor()
         sec_[p]   = dynamic_cast<juce::AudioParameterFloat*>  (apvts.getParameter (capi::pid::sec[p]));
         jassert (perf_[p] && depth_[p] && route_[p] && sec_[p]);
     }
+
+    limiterOn_ = dynamic_cast<juce::AudioParameterBool*> (apvts.getParameter (capi::pid::limiter));
+    jassert (limiterOn_);
 }
 
 bool CapicolaProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
@@ -33,6 +36,7 @@ bool CapicolaProcessor::isBusesLayoutSupported (const BusesLayout& layouts) cons
 void CapicolaProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     engine_.prepare (sampleRate);
+    limiter_.prepare (sampleRate);
     scratch_.setSize (2, juce::jmax (samplesPerBlock, kControlChunk), false, true, true);
     modIn_ = 0.0f;
     lastFade_ = -1.0f;
@@ -128,6 +132,11 @@ void CapicolaProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
         prevInGate_ = gate;
     }
 
+    if (limiterOn_->get())
+        limiter_.process (l, r, numSamples);
+    else
+        limiter_.reset();
+
     buffer.copyFrom (0, 0, scratch_, 0, 0, numSamples);
     if (numOut > 1)
         buffer.copyFrom (1, 0, scratch_, 1, 0, numSamples);
@@ -141,6 +150,8 @@ void CapicolaProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mi
     panel.outGate.store (engine_.outGate(), std::memory_order_relaxed);
     panel.modIn.store (modIn_, std::memory_order_relaxed);
     panel.sliceCount.store (slices, std::memory_order_relaxed);
+    panel.reduction.store (limiterOn_->get() ? limiter_.readReduction() : 1.0f,
+                           std::memory_order_relaxed);
 
     midi.clear();
 }

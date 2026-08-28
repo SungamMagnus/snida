@@ -11,6 +11,7 @@ const juce::String perf[numPots]  = { "pitch", "stretch", "thresh", "grain", "qu
 const juce::String depth[numPots] = { "depth1", "depth2", "depth3", "depth4", "depth5", "depth6" };
 const juce::String route[numPots] = { "route1", "route2", "route3", "route4", "route5", "route6" };
 const juce::String sec[numPots]   = { "smooth", "fade", "drive", "character", "mix", "fbtone" };
+const juce::String limiter        = "limiter";
 }
 
 float stretchCurve (float n)
@@ -135,6 +136,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
 
     layout.add (makeFloat (pid::sec[5], "Feedback Tone", logRange (40.0f, 18000.0f), 480.0f,
                            [] (float v, int) { return juce::String (v, v < 1000.0f ? 0 : -1) + " Hz"; }));
+
+    /* Off by default: feedback and drive running hot is part of the module's
+       behaviour, and a DAW has somewhere to put it. */
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        juce::ParameterID { pid::limiter, 1 }, "Limiter", false));
 
     return layout;
 }

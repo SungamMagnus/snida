@@ -22,6 +22,7 @@ constexpr int kToggle    = 6;
 constexpr int kDepthKnob = 12;
 constexpr int kCharKnob  = 18;
 constexpr int kVoiceFade = 19;
+constexpr int kLimiter   = 24;
 } // namespace
 
 CapicolaEditor::CapicolaEditor (CapicolaProcessor& p)
@@ -81,6 +82,9 @@ void CapicolaEditor::buildControls()
         add (Kind::fader, pid::sec[kVoiceFaderParam[i]],
              { faderX (voiceX, i) - 16.0f, faderTop - 8.0f, 32.0f, faderTrack + 16.0f },
              faderTrack);
+
+    /* Output. */
+    add (Kind::toggle, pid::limiter, limiterRect(), 0.0f);
 }
 
 float CapicolaEditor::scale() const
@@ -126,6 +130,16 @@ void CapicolaEditor::mouseDown (const juce::MouseEvent& e)
     if (sliceRect().contains (d))
     {
         proc.requestSlice();
+        return;
+    }
+
+    if (limiterRect().contains (d))
+    {
+        auto* param = ctls[(size_t) kLimiter].param;
+        param->beginChangeGesture();
+        param->setValueNotifyingHost (param->getValue() > 0.5f ? 0.0f : 1.0f);
+        param->endChangeGesture();
+        repaint();
         return;
     }
 
@@ -355,7 +369,37 @@ void CapicolaEditor::paint (juce::Graphics& g)
         g.fillRect (b);
         tracked (g, "SLICE", b.withY (b.getY() + 5.0f).withHeight (11.0f), 8.5f, hue::paper, 1.6f, false);
 
-        text (g, "midi note on", { b.getX() - 74.0f, y - 7.0f, 66.0f, 14.0f }, 7.6f, ink (0.32f),
-              juce::Justification::right, false);
+        /* LIMIT doubles as its own meter - the fill is the gain being pulled,
+           full at -12 dB. Panel room is scarce enough that a separate readout
+           would have cost more than it told you. */
+        const auto lim = limiterRect();
+        const bool limiting = ctls[(size_t) kLimiter].param->getValue() > 0.5f;
+        if (limiting)
+        {
+            /* Full bar at 12 dB down. Scaling on the raw gain instead would
+               peg the meter by 2.5 dB and tell you nothing after that. */
+            const float red = juce::jlimit (0.001f, 1.0f,
+                                            state.reduction.load (std::memory_order_relaxed));
+            const float dB  = -20.0f * std::log10 (red);
+            const float amount = juce::jlimit (0.0f, 1.0f, dB / 12.0f);
+            g.setColour (ink (0.10f));
+            g.fillRect (lim);
+            if (amount > 0.001f)
+            {
+                g.setColour (hue::clip);
+                g.fillRect (lim.withWidth (lim.getWidth() * amount));
+            }
+            g.setColour (hue::clip);
+            g.drawRect (lim, 1.0f);
+            tracked (g, "LIMIT", lim.withY (lim.getY() + 5.0f).withHeight (11.0f), 8.5f,
+                     hue::ink, 1.6f, false);
+        }
+        else
+        {
+            g.setColour (ink (0.28f));
+            g.drawRect (lim, 1.0f);
+            tracked (g, "LIMIT", lim.withY (lim.getY() + 5.0f).withHeight (11.0f), 8.5f,
+                     ink (0.45f), 1.6f, false);
+        }
     }
 }

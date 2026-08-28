@@ -15,7 +15,8 @@ namespace pid
 extern const juce::String perf[numPots];   // pitch, stretch, thresh, grain, quality, feedback
 extern const juce::String depth[numPots];
 extern const juce::String route[numPots];
-extern const juce::String sec[numPots];    // smooth, fade, drive, character, mix, fbtone
+extern const juce::String sec[numPots];
+extern const juce::String limiter;    // smooth, fade, drive, character, mix, fbtone
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout createLayout();

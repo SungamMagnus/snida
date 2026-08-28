@@ -63,6 +63,12 @@ inline juce::Rectangle<float> toggleRect (int i)
     return { togX, rowY (i) - 10.0f, togW, 20.0f };
 }
 
+/** The limiter takes the slot beside SLICE, and meters itself while it works. */
+inline juce::Rectangle<float> limiterRect()
+{
+    return { contentR - 68.0f - 82.0f - 76.0f, statusY - 10.0f, 66.0f, 20.0f };
+}
+
 inline juce::Rectangle<float> sliceRect()
 {
     return { contentR - 68.0f - 82.0f, statusY - 10.0f, 60.0f, 20.0f };
