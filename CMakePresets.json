@@ -1,0 +1,50 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+    "configurePresets": [
+        {
+            "name": "arm",
+            "displayName": "Alchemy Lab V2 — deploy (DFU / bootloader)",
+            "description": "BOOT_APP image flashed via DFU; launched by the bootloader.",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-arm",
+            "toolchainFile": "${sourceDir}/lib/alchemy-sdk/cmake/toolchains/stm32h750xx.cmake",
+            "cacheVariables": {
+                "ALCHEMY_BOARD": "v2",
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "host",
+            "displayName": "Host — DSP core unit tests",
+            "description": "Native build of tests/host against lib/ (no SDK, no board).",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-host",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "arm-bench",
+            "displayName": "Alchemy Lab V2 — bench (1 Hz CPU/CV serial log, no HostLink)",
+            "description": "Deploy image with the serial log on the front USB instead of HostLink.",
+            "inherits": "arm",
+            "binaryDir": "${sourceDir}/build-arm-bench",
+            "cacheVariables": {
+                "CAPICOLA_BENCH_LOG": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        { "name": "arm",       "configurePreset": "arm" },
+        { "name": "arm-bench", "configurePreset": "arm-bench" },
+        { "name": "host",      "configurePreset": "host" }
+    ],
+    "testPresets": [
+        {
+            "name": "host",
+            "configurePreset": "host",
+            "output": { "outputOnFailure": true }
+        }
+    ]
+}
