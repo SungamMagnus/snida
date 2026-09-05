@@ -93,8 +93,8 @@ refuses to load the plug-in — usually **silently**, so it simply never appears
 in your host and nothing explains why. Run this once after installing:
 
 ```sh
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Sníða.component
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Snida.vst3
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Snida.component
 ```
 
 Then restart your host and rescan.
@@ -124,7 +124,7 @@ VST3, AU and a standalone app are copied into the user plug-in folders. On
 macOS the result is a universal `arm64;x86_64` binary — verify with:
 
 ```sh
-lipo -archs ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3/Contents/MacOS/Sníða
+lipo -archs ~/Library/Audio/Plug-Ins/VST3/Snida.vst3/Contents/MacOS/Snida
 ```
 
 ## Build — firmware

@@ -17,7 +17,7 @@ if(APPLE)
     endif()
 endif()
 
-project(CapicolaVST VERSION 0.4.1 LANGUAGES C CXX)
+project(CapicolaVST VERSION 0.4.2 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,7 +36,7 @@ juce_add_plugin(Capicola
     PLUGIN_MANUFACTURER_CODE Sngm
     PLUGIN_CODE             Snda
     FORMATS                 VST3 AU Standalone
-    PRODUCT_NAME            "Sníða"
+    PRODUCT_NAME            "Snida"
     DESCRIPTION             "Keyframe time-stretcher / transient auto-slicer"
     IS_SYNTH                FALSE
     NEEDS_MIDI_INPUT        TRUE

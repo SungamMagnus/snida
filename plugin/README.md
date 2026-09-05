@@ -35,7 +35,7 @@ silently while `auval` still passes under translation, which looks exactly like
 a signing or quarantine problem and isn't one. Check a build with:
 
 ```sh
-lipo -archs ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3/Contents/MacOS/Sníða
+lipo -archs ~/Library/Audio/Plug-Ins/VST3/Snida.vst3/Contents/MacOS/Snida
 ```
 
 Add `-DCAPICOLA_PANEL_SHOT=ON` for `panel_shot`, a console tool that renders the
