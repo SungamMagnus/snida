@@ -1,4 +1,4 @@
-# Colacut — Panel Reference
+# Sníða — Panel Reference
 
 *Auto-slicer / keyframe time-stretcher, Alchemy Lab V2. Firmware 0.3.0, 2026-07-27.*
 
@@ -11,7 +11,7 @@
 > this fork under the AGPL with the product name changed. The panel it
 > describes is theirs.
 
-Colacut listens constantly. Two independent channels (L/R) each run a transient
+Sníða listens constantly. Two independent channels (L/R) each run a transient
 detector over the input; every detected transient — or a press of **B2**, or a
 rising edge on **TRIG IN** — splices the granular playback head onto fresh
 material. Pitch and time-stretch are fully decoupled, and the stretch grid
@@ -155,7 +155,7 @@ applies from the next splice on.
 
 **P5 — mix.** The wet path lags the dry by the fade, so mid-mix settings
 comb/phase against sustained material — expected, and a sound of its own at
-unity pitch. Full wet is the classic Colacut behavior.
+unity pitch. Full wet is the classic Sníða behavior.
 
 ---
 

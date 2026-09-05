@@ -32,11 +32,11 @@ add_subdirectory("${JUCE_DIR}" "${CMAKE_BINARY_DIR}/JUCE" EXCLUDE_FROM_ALL)
 
 juce_add_plugin(Capicola
     COMPANY_NAME            "Sungam"
-    BUNDLE_ID               "com.sungam.colacut"
+    BUNDLE_ID               "com.sungam.snida"
     PLUGIN_MANUFACTURER_CODE Sngm
-    PLUGIN_CODE             Clct
+    PLUGIN_CODE             Snda
     FORMATS                 VST3 AU Standalone
-    PRODUCT_NAME            "Colacut"
+    PRODUCT_NAME            "Sníða"
     DESCRIPTION             "Keyframe time-stretcher / transient auto-slicer"
     IS_SYNTH                FALSE
     NEEDS_MIDI_INPUT        TRUE

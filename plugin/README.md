@@ -1,6 +1,6 @@
-# Colacut — VST3 / AU
+# Sníða — VST3 / AU
 
-Part of [Colacut](../README.md), a fork of
+Part of [Sníða](../README.md), a fork of
 [Capicola](https://github.com/heavylight-industries/capicola) by Heavylight
 Industries. The DSP core under `lib/` is theirs; this plug-in shell is the
 part this fork adds.
@@ -35,7 +35,7 @@ silently while `auval` still passes under translation, which looks exactly like
 a signing or quarantine problem and isn't one. Check a build with:
 
 ```sh
-lipo -archs ~/Library/Audio/Plug-Ins/VST3/Colacut.vst3/Contents/MacOS/Colacut
+lipo -archs ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3/Contents/MacOS/Sníða
 ```
 
 Add `-DCAPICOLA_PANEL_SHOT=ON` for `panel_shot`, a console tool that renders the

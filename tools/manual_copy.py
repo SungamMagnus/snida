@@ -12,7 +12,7 @@ d = json.load(open(sys.argv[1]))
 m = d["manual"]; comps = {c["id"]: c for c in d["components"]}
 o = []; w = o.append
 
-w("# Colacut — interactive manual copy\n")
+w("# Sníða — interactive manual copy\n")
 w("> **Generated file — do not edit.** Regenerating overwrites it.\n"
   "> The copy lives in `src/capicola_manual.cpp`; edit there, then rerun\n"
   "> `tools/manual_copy.py`. This is the exact text the programmer on\n"

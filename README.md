@@ -1,16 +1,16 @@
-# Colacut
+# Sníða
 
 A real-time time stretcher, pitch shifter and transient-driven auto-slicer —
 running as a VST3 / AU plug-in, and as firmware for the Hermetic Modular
 Alchemy Lab V2.
 
-**Colacut is a fork of [Capicola](https://github.com/heavylight-industries/capicola)
+**Sníða is a fork of [Capicola](https://github.com/heavylight-industries/capicola)
 by [Heavylight Industries](https://github.com/heavylight-industries).** The
 keyframe time-stretching engine, the DSP core and the research behind them are
 their work, not mine. What this fork adds is the plug-in build. See
 [Credit](#credit) for the paper, the manual and the audio examples.
 
-![Colacut plug-in panel](docs/colacut-panel.png)
+![Sníða plug-in panel](docs/snida-panel.png)
 
 *The VST3 / AU faceplate this fork adds. The modulation matrix in the middle
 routes the input and output envelope followers, or the mod wheel, onto any
@@ -64,13 +64,16 @@ Forked from upstream `93060e2` (24 August 2026). Changes since:
   Heavylight Industries to Sungam, in the plug-in identity and user-facing
   documentation. Code identifiers, file names and the `capicola` namespace are
   untouched, so the tree still diffs cleanly against upstream.
+- **Renamed again**, from Colacut to Sníða, in the same identity and
+  documentation surfaces only — the same rule applies: code identifiers, file
+  names and the `capicola` namespace are untouched.
 
 The firmware, `lib/` and `src/` are otherwise unmodified.
 
 ## Install
 
 Prebuilt plug-in binaries are on the
-[Releases](https://github.com/SungamMagnus/colacut/releases) page. macOS
+[Releases](https://github.com/SungamMagnus/snida/releases) page. macOS
 universal (Apple Silicon and Intel), macOS 11 or later — there is no Windows or
 Linux build. The Alchemy Lab V2 firmware is not released as a binary; build it
 from source below.
@@ -90,8 +93,8 @@ refuses to load the plug-in — usually **silently**, so it simply never appears
 in your host and nothing explains why. Run this once after installing:
 
 ```sh
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Colacut.vst3
-xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Colacut.component
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3
+xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/Sníða.component
 ```
 
 Then restart your host and rescan.
@@ -121,7 +124,7 @@ VST3, AU and a standalone app are copied into the user plug-in folders. On
 macOS the result is a universal `arm64;x86_64` binary — verify with:
 
 ```sh
-lipo -archs ~/Library/Audio/Plug-Ins/VST3/Colacut.vst3/Contents/MacOS/Colacut
+lipo -archs ~/Library/Audio/Plug-Ins/VST3/Sníða.vst3/Contents/MacOS/Sníða
 ```
 
 ## Build — firmware
@@ -168,9 +171,9 @@ that engine in a DAW.
 
 ## License
 
-Colacut is free software under the **GNU Affero General Public License v3.0** —
+Sníða is free software under the **GNU Affero General Public License v3.0** —
 see [LICENSE](LICENSE) — the same licence as upstream Capicola, as the AGPL
-requires. If you ship hardware or a service running a modified Colacut, you
+requires. If you ship hardware or a service running a modified Sníða, you
 must offer the corresponding source.
 
 Third-party code keeps its own terms: `lib/alchemy-sdk` and the libDaisy it

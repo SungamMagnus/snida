@@ -371,7 +371,7 @@ void CapicolaEditor::paint (juce::Graphics& g)
 
         /* Bottom-right corner: the action, then the mark. */
         const juce::Rectangle<float> mark (contentR - 68.0f, y - 6.0f, 68.0f, 12.0f);
-        tracked (g, "COLACUT", mark, 8.5f, ink (0.62f), 3.2f);
+        tracked (g, "SNÍÐA", mark, 8.5f, ink (0.62f), 3.2f);
 
         const auto b = sliceRect();
         g.setColour (flashing ? hue::ink : hue::perform);

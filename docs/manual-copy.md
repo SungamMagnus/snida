@@ -1,4 +1,4 @@
-# Colacut — interactive manual copy
+# Sníða — interactive manual copy
 
 > **Generated file — do not edit.** Regenerating overwrites it.
 > The copy lives in `src/capicola_manual.cpp`; edit there, then rerun
